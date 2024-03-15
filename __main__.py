@@ -23,9 +23,8 @@ class img_gen:
             rabbitmq_passwd=self._config.rabbitmq.password,
         ) 
 
-        self._font_header=ImageFont.truetype('Comic Sans MS Bold.ttf', 30)
-        self._font_text=ImageFont.truetype('Comic Sans MS Bold.ttf', 15)
-        self._miku_img=Image.open('miku.png')
+        self._font_text=ImageFont.truetype('Monaco.ttf', 30)
+        self._terminal_img=Image.open('terminal.png')
 
 
 
@@ -33,15 +32,10 @@ class img_gen:
         user_agent=parse(user_agent)
         buffer=BytesIO()
 
-        img=Image.new(mode="RGBA", size=(1000, 563), color='white')
+        img=self._terminal_img.copy()
         draw=ImageDraw.Draw(img)
-        draw.rectangle([(0,0),img.size], fill = (randint(0,255),randint(0,255),randint(0,255)))
-        img.alpha_composite(self._miku_img)
-        draw.text((10,10), "Welcome", font=self._font_header, fill="black")
         
-        draw.text((10,80), f"Your IP Address is: {ip_addr}", font=self._font_text, fill="black")
-        draw.text((10,100), f"Your browser is {user_agent.browser.family}({user_agent.browser.version_string})", font=self._font_text, fill="black")
-        draw.text((10,120), f"Your operating system is {user_agent.os.family} version {user_agent.os.version_string}", font=self._font_text, fill="black")
+        draw.text((465,750), f'"{ip_addr}",', font=self._font_text, fill=(191, 189, 0))
         img.save(buffer, "png")
         buffer.seek(0)        
         return buffer.read()
